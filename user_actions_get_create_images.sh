@@ -5,22 +5,10 @@ set -e
 # source config_set_up_nodes
 source /root/demorc
 
-re_pattern="^[[:xdigit:]]{8}-[[:xdigit:]]{4}-[[:xdigit:]]{4}-[[:xdigit:]]{4}-[[:xdigit:]]{12}$"
-
 function get_net_id {
 	net_id=$(nova net-list \
 		| grep baremetal \
 		| awk {'print $2'})	
-}
-
-function check_id {
-    echo "NET ID = $net_id"
-    if [[ $net_id =~ $re_pattern ]]
-    then
-        echo "expression evaluated as true"
-    else
-        echo "expression evaluated as false"
-    fi
 }
 
 function get_fedora {
@@ -105,17 +93,17 @@ function user_data {
 function boot_image {
     nova boot \
         --flavor bm_flavor \
-        --image virtual_trusty_ext4_demo \
+        --image virtual_ubuntu_trasty_ext4_demo \
         --key-name ironic_demo_key \
         --nic net-id=$net_id \
-	--user-data myfile.txt \
+        --file /home/ubuntu/myfile.txt=myfile.txt \
         vm_test_img_01
 }
 
 function boot_fedora {
     nova boot \
         --flavor bm_flavor \
-        --image virtual_trusty_ext4 \
+        --image virtual_trusty_ext4_demo \
         --key-name ironic_key \
         --nic net-id=$net_id \
         vm_test_f_img_01
@@ -124,16 +112,14 @@ function boot_fedora {
 # get_fedora
 # get_ubuntu_12
 # get_ubuntu_image
-# echo $0
 get_net_id
-check_id
 
 # virtual_fedora_img_create
 # virtual_ubuntu_trasty_img_create
 # virtual_ubuntu_12_img_create
 # virtual_ubuntu_15_img_create
 
-# echo "net-id = $net_id"
+echo "net-id = $net_id"
 # key_create
 # user_data
-# boot_image
+boot_image
