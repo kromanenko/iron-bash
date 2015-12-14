@@ -1,6 +1,6 @@
 #! /bin/bash
 
-# additional parameters 
+# !!!! additional parameters !!!!!!!
 # $1 MAC address
 
 set -e
@@ -74,11 +74,11 @@ function virtual_port_create {
 		-n $virtual_node_id
 }
 
-#get_ip
-#get_kernel_image_id
-#get_ramdisk_image_id
-#get_squashfs_image_id
-#get_net_id
+get_ip
+get_kernel_image_id
+get_ramdisk_image_id
+get_squashfs_image_id
+get_net_id
 
 echo "IP address = $ip_addr"
 echo "ramdisk_image_id = $ramdisk_id"
@@ -87,12 +87,13 @@ echo "squashfs_image_id = $hfs_id"
 echo "net-id = $net_id"
 echo "virtual_node_id = $virtual_node_id"
 
+virt_flavor_create
 
-#virt_flavor_create
+virtual_node_create
 
-#virtual_node_create
 echo "Start sleeping"
-# sleep 3m
+sleep 3m
 echo "End sleeping"
+
 get_virtual_node_id
 virtual_port_create
