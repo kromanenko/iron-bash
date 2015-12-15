@@ -5,7 +5,8 @@
 
 set -e
 
-mac_address="$1"
+mac_address_01="$1"
+
 # source config_set_up_nodes
 source /root/openrc
 
@@ -88,7 +89,6 @@ echo "net-id = $net_id"
 echo "virtual_node_id = $virtual_node_id"
 
 virt_flavor_create
-
 virtual_node_create
 
 echo "Start sleeping"

@@ -1,11 +1,6 @@
 #! /bin/bash
 
-# additional parameters 
-# $1 IP address
-# $2 MAC address
-
 set -e
-# source config_set_up_nodes
 source /root/openrc
 
 function tenant_create {
