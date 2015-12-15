@@ -5,7 +5,14 @@
 
 set -e
 
-mac_address_01="$1"
+if [ $# -eq 0 ]
+  then
+    echo "No arguments supplied"
+    echo "Supply Ironic Node MAC address"
+    exit 1
+fi
+
+mac_address="$1"
 
 # source config_set_up_nodes
 source /root/openrc
@@ -86,8 +93,6 @@ echo "ramdisk_image_id = $ramdisk_id"
 echo "kernel_image_id = $kernel_id"
 echo "squashfs_image_id = $hfs_id"
 echo "net-id = $net_id"
-echo "virtual_node_id = $virtual_node_id"
-
 virt_flavor_create
 virtual_node_create
 
@@ -96,4 +101,5 @@ sleep 3m
 echo "End sleeping"
 
 get_virtual_node_id
+echo "virtual_node_id = $virtual_node_id"
 virtual_port_create
