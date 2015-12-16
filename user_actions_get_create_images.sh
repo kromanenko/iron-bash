@@ -58,13 +58,13 @@ function boot_image_02 {
         vm_test_img_02
 }
 
-# get_ubuntu_image
+get_ubuntu_image
 get_net_id
 
-# virtual_ubuntu_trasty_img_create
+virtual_ubuntu_trasty_img_create
 
 echo "net-id = $net_id"
-# key_create
+key_create
 # user_data
 boot_image
-boot_image_02
+# boot_image_02

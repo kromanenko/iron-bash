@@ -201,18 +201,19 @@ echo "ramdisk_image_id = $ramdisk_id"
 echo "kernel_image_id = $kernel_id"
 echo "squashfs_image_id = $hfs_id"
 echo "net-id = $net_id"
-# virt_flavor_create
+virt_flavor_create
 virtual_node_create
 # virtual_node_02_create
 
-echo "Start sleeping"
+echo "Start sleeping 3m"
+date
 sleep 3m
 echo "End sleeping"
 
 get_virtual_node_id
 echo "virtual_node_id = $virtual_node_id"
-get_virtual_node_02_id
+# get_virtual_node_02_id
 echo "virtual_node_02_id = $virtual_node_02_id"
 virtual_port_create
-virtual_port_02_create
+# virtual_port_02_create
 echo -e "$GB [Script has been executed successfully] $END"
