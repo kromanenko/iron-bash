@@ -99,6 +99,10 @@ def delete_flavor(flavor_id):
     shell('nova flavor-delete {0}'.format(flavor_id))
 
 
+def get_ip():
+    return shell("ip ro | grep default | awk {'print $3'}")
+
+
 def net_create(net_name, geatway, net_cidr):
     """Returns dict.
 

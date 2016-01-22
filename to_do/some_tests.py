@@ -26,8 +26,7 @@ class TestF(object):
         logging.info('Secret key: {0}'.format(secret_key))
         flavor = virt_flavor_create(name)
         logging.info('Flavor: {0}'.format(flavor))
-        flavor_list = get_flavor_list()
-        logging.info('Flavor list: {0}'.format(flavor_list))
+
 
 
 
@@ -37,11 +36,9 @@ class TestF(object):
     def test_02(self):
         name = generate_name()
         print name
-        key_create(name)
-        net = net_create(name, '192.168.115.1', '192.168.115.0/28')
-        instance = boot_instance(net_id=net['network_id'],
-                                 vm_name=name, key=name)
-        print instance
+        ip = get_ip()
+        logging.info('IP address: {0}'.format(ip))
+
 
     def test_03(self):
         net_create('net_02', '192.168.114.1', '192.168.114.0/28')
@@ -49,4 +46,5 @@ class TestF(object):
 
 if __name__ == "__main__":
     test_a = TestF()
-    test_a.test_01()
+    # test_a.test_01()
+    test_a.test_02()
