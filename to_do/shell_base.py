@@ -23,13 +23,55 @@ def get_key_list():
     return parser.listing(key_list)
 
 
+def tenant_create(name):
+    # name = generate_name()
+    tenant = shell('openstack project create {0}'.format(name))
+    tenant = parser.listing(tenant)
+    # return tenant_id
+    return [x['Value'] for x in tenant if 'id' in x.values()][0]
+
+
+def tenant_delete(name):
+    shell('openstack project delete {0}'.format(name))
+
+
+def user_create(name):
+    user = shell('openstack user create \
+                 --project {0} \
+                 --password {0} \
+                 --email {0}@example.com \
+                 --enable {0}'.format(name))
+    user = parser.listing(user)
+    return [x['Value'] for x in user if 'id' in x.values()][0]
+
+
+def get_user_list():
+    user = shell('openstack user list')
+    return parser.listing(user)
+
+
+def user_delete(user_id):
+    shell('openstack user delete {0}'.format(user_id))
+
+
+def create_user_rc(name):
+    shell('cp /root/openrc /root/{0}rc'.format(name))
+    shell('sed -i s/admin/{0}/g /root/{0}rc'.format(name))
+    return shell('cat /root/{0}rc'.format(name))
+
+
+def get_tenant_list():
+    tenant_list = shell('openstack project list')
+    return parser.listing(tenant_list)
+
+
 def key_create(key_name):
     key_list = get_key_list()
 
     if key_name not in [x['Name'] for x in key_list]:
         key = shell('nova keypair-add {0} > {0}.pem'.format(key_name))
         shell('chmod 600 {0}.pem'.format(key_name))
-        return parser.listing(key)
+        return shell('cat {0}.pem'.format(key_name))
 
 
 def key_delete(key_name):
@@ -38,6 +80,23 @@ def key_delete(key_name):
     if key_name in [x['Name'] for x in key_list]:
         shell('nova keypair-delete {0}'.format(key_name))
         shell('rm {0}.pem'.format(key_name))
+
+
+def get_flavor_list():
+    flavor = shell('nova flavor-list')
+    return parser.listing(flavor)
+
+
+def virt_flavor_create(name='bm_flavor'):
+    flavor_list = get_flavor_list()
+    if name in [x['Name'] for x in flavor_list]:
+        return
+    flavor = shell('nova flavor-create {0} auto 3072 150 2'.format(name))
+    return parser.listing(flavor)
+
+
+def delete_flavor(flavor_id):
+    shell('nova flavor-delete {0}'.format(flavor_id))
 
 
 def net_create(net_name, geatway, net_cidr):
@@ -88,7 +147,7 @@ def get_nova_list():
 def get_instance_status(name):
     instance = shell('nova show {0}'.format(name))
     instance = parser.details_multiple(instance)
-    return [x['status'] for x in instance][0]
+    return [x['status'] for x in instance]
 
 
 def boot_instance(net_id,
@@ -124,16 +183,3 @@ def delete_instance(instance_id):
     deleted_instance = shell('nova delete {0}'.format(instance_id))
     print deleted_instance
     return deleted_instance
-
-
-# nn = net_create('serg05', '192.168.18.1', '192.168.18.0/28')
-# print '==============================================='
-# nn = get_floating_ip_list()
-# nets = get_net_list()
-# inst = boot_instance('cd7c13f6-792f-44cc-bb2f-5e28fd1a976e')
-# print inst
-
-# instances_ids = get_instance_list_ids()
-# print instances_ids
-# for i in instances_ids:
-#     delete_instance(i)
